@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>delmiawan online - Rekomendasi Produk Shopee</title>
+    <!-- Font Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --shopee-orange: #EE4D2D;
+            --shopee-orange-dark: #d73818;
+            --shopee-light: #FFF3F0;
+            --bg-color: #F8F9FA;
+            --text-dark: #212529;
+            --text-muted: #6C757D;
+            --border-color: #E9ECEF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 12px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px; /* Ukuran optimal untuk dibuka dari bio Instagram (Mobile) */
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 24px 16px;
+        }
+
+        /* Bagian Profil & Logo */
+        .profile {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-img {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        .profile h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Pencarian & Filter */
+        .search-box {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--shopee-orange);
+            box-shadow: 0 0 0 3px var(--shopee-light);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            scrollbar-width: none;
+        }
+
+        .category-filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--shopee-orange);
+            color: #FFFFFF;
+            border-color: var(--shopee-orange);
+        }
+
+        /* Tabel Produk */
+        .table-wrapper {
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background-color: var(--shopee-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            padding: 12px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--shopee-orange);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 10px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #FAFAFA;
+        }
+
+        .col-no {
+            width: 22%;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .badge-no {
+            background: #F1F3F5;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .col-cat {
+            width: 48%;
+        }
+
+        .product-name {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .category-tag {
+            display: inline-block;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: #F8F9FA;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #E9ECEF;
+        }
+
+        .col-link {
+            width: 30%;
+            text-align: right;
+        }
+
+        .btn-shopee {
+            display: inline-block;
+            background-color: var(--shopee-orange);
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-shopee:hover {
+            background-color: var(--shopee-orange-dark);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header / Profil -->
+    <div class="profile">
+        <!-- Pastikan file gambar logo disimpan dengan nama logo.png di folder yang sama -->
+        <img src="logo.png" alt="Logo delmiawan online" class="logo-img">
+        <h1>delmiawan online</h1>
+        <p>Belanja Mudah, Harga Terbaik — Ketik nomor produk di bawah!</p>
+    </div>
+
+    <!-- Kolom Pencarian -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Cari nomor produk (misal: 001), nama, atau kategori...">
+    </div>
+
+    <!-- Filter Kategori -->
+    <div class="category-filters" id="categoryFilters">
+        <button class="filter-btn active" data-category="all">Semua</button>
+    </div>
+
+    <!-- Tabel Produk -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-no">No.</th>
+                    <th class="col-cat">Kategori / Produk</th>
+                    <th class="col-link" style="text-align: right;">Link Produk</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody">
+                <!-- Data akan diisi otomatis oleh JavaScript di bawah -->
+            </tbody>
+        </table>
+        <div class="empty-state" id="emptyState">
+            Produk yang kamu cari tidak ditemukan 😢
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 delmiawan online. Koleksi Affiliate Shopee.
+    </footer>
+</div>
+
+<script>
+    // =========================================================================
+    // DATA PRODUK AFFILIATE (EDIT BAGIAN INI UNTUK MENAMBAH/MENGUBAH PRODUK)
+    // =========================================================================
+    const products = [
+        { no: "001", nama: "Kemeja Linen Oversize Wanita", kategori: "Fashion", link: "https://shope.ee/contohlink1" },
+        { no: "002", nama: "TWS Bluetooth Earphone Bass", kategori: "Elektronik", link: "https://shope.ee/contohlink2" },
+        { no: "003", nama: "Rak Kosmetik Akrilik Putar", kategori: "Rumah Tangga", link: "https://shope.ee/contohlink3" },
+        { no: "004", nama: "Sunscreen SPF 50 PA++++", kategori: "Skincare", link: "https://shope.ee/contohlink4" },
+        { no: "005", nama: "Celana Kulot Highwaist Knit", kategori: "Fashion", link: "https://shope.ee/contohlink5" },
+        { no: "006", nama: "Lampu Tidur Proyektor Bintang", kategori: "Dekorasi", link: "https://shope.ee/contohlink6" },
+        { no: "007", nama: "Botol Minum Motivasi 2 Liter", kategori: "Aksesoris", link: "https://shope.ee/contohlink7" },
+        { no: "008", nama: "Stand Holder HP Meja Lipat", kategori: "Elektronik", link: "https://shope.ee/contohlink8" }
+    ];
+
+    const tableBody = document.getElementById("productTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilters = document.getElementById("categoryFilters");
+    const emptyState = document.getElementById("emptyState");
+
+    let activeCategory = "all";
+
+    // Buat tombol kategori otomatis dari daftar produk
+    const categories = ["all", ...new Set(products.map(p => p.kategori))];
+    categoryFilters.innerHTML = categories.map(cat => `
+        <button class="filter-btn ${cat === 'all' ? 'active' : ''}" data-category="${cat}">
+            ${cat === 'all' ? 'Semua' : cat}
+        </button>
+    `).join("");
+
+    // Fungsi menampilkan tabel
+    function renderTable() {
+        const query = searchInput.value.toLowerCase();
+        
+        const filtered = products.filter(item => {
+            const matchCategory = activeCategory === "all" || item.kategori === activeCategory;
+            const matchSearch = item.no.toLowerCase().includes(query) ||
+                                item.kategori.toLowerCase().includes(query) ||
+                                item.nama.toLowerCase().includes(query);
+            return matchCategory && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = "";
+            emptyState.style.display = "block";
+        } else {
+            emptyState.style.display = "none";
+            tableBody.innerHTML = filtered.map(item => `
+                <tr>
+                    <td class="col-no"><span class="badge-no">#${item.no}</span></td>
+                    <td class="col-cat">
+                        <span class="product-name">${item.nama}</span>
+                        <span class="category-tag">${item.kategori}</span>
+                    </td>
+                    <td class="col-link">
+                        <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="btn-shopee">
+                            Beli 🛒
+                        </a>
+                    </td>
+                </tr>
+            `).join("");
+        }
+    }
+
+    // Event listener pencarian
+    searchInput.addEventListener("input", renderTable);
+
+    // Event listener klik kategori
+    categoryFilters.addEventListener("click", (e) => {
+        if (e.target.classList.contains("filter-btn")) {
+            document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+            e.target.classList.add("active");
+            activeCategory = e.target.getAttribute("data-category");
+            renderTable();
+        }
+    });
+
+    // Tampilkan tabel pertama kali
+    renderTable();
+</script>
+
+</body>
+</html>
